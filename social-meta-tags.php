@@ -105,38 +105,53 @@ class SocialMetaTagsPlugin extends Plugin
 
         if($this->grav['config']->get('plugins.social-meta-tags.social_pages.pages.facebook.enabled')){
 
-            $meta['og:sitename']['name']        = 'og:sitename';
-            $meta['og:sitename']['property']    = 'og:sitename';
-            $meta['og:sitename']['content']     = $this->grav['page']->value('name');
-
-            $meta['og:title']['name']           = 'og:title';
-            $meta['og:title']['property']       = 'og:title';
-            $meta['og:title']['content']        = $this->grav['page']->title();
-
-            $meta['og:description']['name']     = 'og:description';
-            $meta['og:description']['property'] = 'og:description';
-            $meta['og:description']['content']  = substr($this->grav['page']->value('content'),0,140);
-
-            $meta['og:type']['name']            = 'og:type';
-            $meta['og:type']['property']        = 'og:type';
-            $meta['og:type']['content']         = 'article';
-
-            $meta['og:url']['name']             = 'og:url';
-            $meta['og:url']['property']         = 'og:url';
-            $meta['og:url']['content']          = $this->grav['uri']->url(true);
-
-            if (!empty($this->grav['page']->value('media.image'))) {
-                $images = $this->grav['page']->media()->images();
-                $image  = array_shift($images);
-
-                $meta['og:image']['name']      = 'og:image';
-                $meta['og:image']['property']  = 'og:image';
-                $meta['og:image']['content']   = $this->grav['uri']->base() . $image->url();
+            if (!isset($meta['og:sitename'])) {
+                $meta['og:sitename']['name']        = 'og:sitename';
+                $meta['og:sitename']['property']    = 'og:sitename';
+                $meta['og:sitename']['content']     = $this->grav['page']->value('name');
             }
 
-            $meta['fb:app_id']['name']         = 'fb:app_id';
-            $meta['fb:app_id']['property']     = 'fb:app_id';
-            $meta['fb:app_id']['content']      = $this->grav['config']->get('plugins.social-meta-tags.social_pages.pages.facebook.appid');
+            if (!isset($meta['og:title'])) {
+                $meta['og:title']['name']           = 'og:title';
+                $meta['og:title']['property']       = 'og:title';
+                $meta['og:title']['content']        = $this->grav['page']->title();
+            }
+
+            if (!isset($meta['og:description'])) {
+                $meta['og:description']['name']     = 'og:description';
+                $meta['og:description']['property'] = 'og:description';
+                $meta['og:description']['content']  = substr($this->grav['page']->value('content'),0,140);
+            }
+
+            if (!isset($meta['og:type'])) {
+                $meta['og:type']['name']            = 'og:type';
+                $meta['og:type']['property']        = 'og:type';
+                $meta['og:type']['content']         = 'article';
+            }
+
+            if (!isset($meta['og:url'])) {
+                $meta['og:url']['name']             = 'og:url';
+                $meta['og:url']['property']         = 'og:url';
+                $meta['og:url']['content']          = $this->grav['uri']->url(true);
+            }
+
+            if (!isset($meta['og:image'])) {
+                if (!empty($this->grav['page']->value('media.image'))) {
+                    $images = $this->grav['page']->media()->images();
+                    $image  = array_shift($images);
+
+                    $meta['og:image']['name']      = 'og:image';
+                    $meta['og:image']['property']  = 'og:image';
+                    $meta['og:image']['content']   = $this->grav['uri']->base() . $image->url();
+                }
+            }
+
+            if (!isset($meta['fb:app_id'])) {
+                $meta['fb:app_id']['name']         = 'fb:app_id';
+                $meta['fb:app_id']['property']     = 'fb:app_id';
+                $meta['fb:app_id']['content']      = $this->grav['config']->get('plugins.social-meta-tags.social_pages.pages.facebook.appid');
+            }
+
 
         }
         return $meta;
